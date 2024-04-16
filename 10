@@ -1,0 +1,51 @@
+#include <iostream>
+
+// Оголошення типу TTime
+struct TTime {
+    int hours;
+    int minutes;
+    int seconds;
+};
+
+// Функція, яка додає N секунд до часу T
+void AddSec(TTime &T, int N) {
+    // Перевірка чи час T є правильним
+    if (T.hours >= 0 && T.hours < 24 &&
+        T.minutes >= 0 && T.minutes < 60 &&
+        T.seconds >= 0 && T.seconds < 60) {
+        
+        // Додаємо секунди N
+        int total_seconds = T.hours * 3600 + T.minutes * 60 + T.seconds + N;
+        
+        // Перевірка на переповнення годин, хвилин та секунд
+        if (total_seconds >= 0) {
+            T.hours = (total_seconds / 3600) % 24;
+            T.minutes = (total_seconds / 60) % 60;
+            T.seconds = total_seconds % 60;
+        }
+    }
+}
+
+int main() {
+    // Приклад використання функції AddSec
+    TTime time1 = {10, 15, 30};
+    TTime time2 = {23, 59, 45};
+    TTime time3 = {7, 30, 0};
+    TTime time4 = {0, 0, 0};
+    TTime time5 = {12, 0, 0};
+    
+    AddSec(time1, 60);
+    AddSec(time2, 120);
+    AddSec(time3, 3600);
+    AddSec(time4, -10);
+    AddSec(time5, 7200);
+    
+    // Виведення нового часу для п'яти заданих моментів часу
+    std::cout << "New time 1: " << time1.hours << ":" << time1.minutes << ":" << time1.seconds << std::endl;
+    std::cout << "New time 2: " << time2.hours << ":" << time2.minutes << ":" << time2.seconds << std::endl;
+    std::cout << "New time 3: " << time3.hours << ":" << time3.minutes << ":" << time3.seconds << std::endl;
+    std::cout << "New time 4: " << time4.hours << ":" << time4.minutes << ":" << time4.seconds << std::endl;
+    std::cout << "New time 5: " << time5.hours << ":" << time5.minutes << ":" << time5.seconds << std::endl;
+    
+    return 0;
+}
