@@ -1,0 +1,61 @@
+#include <iostream>
+
+// Оголошення структури, що містить вхідні та вихідні дані задачі
+struct CalculationData {
+    int num1; // Перше число
+    int num2; // Друге число
+    int sum; // Сума
+    int difference; // Різниця
+    int product; // Добуток
+    float quotient; // Частка
+    bool has_matching_pair; // Показник, чи є пара співпадаючих чисел
+};
+
+// Функція для обробки структури відповідно до задачі
+void processCalculationData(CalculationData &data) {
+    // Обчислення суми, різниці, добутку і частки квадратів двох чисел
+    data.sum = data.num1 + data.num2;
+    data.difference = data.num1 - data.num2;
+    data.product = data.num1 * data.num2;
+    if (data.num2 != 0) {
+        data.quotient = (float)(data.num1 * data.num1) / (float)(data.num2 * data.num2);
+    } else {
+        // Якщо num2 дорівнює нулю, уникнути ділення на нуль
+        data.quotient = 0;
+    }
+    
+    // Перевірка на співпадіння пари чисел
+    data.has_matching_pair = (data.num1 == data.num2 || data.num1 * data.num1 == data.num2 * data.num2);
+}
+
+// Функція для перевірки на коректність та заповнення вхідних даних структури
+void fillData(CalculationData &data, int num1, int num2) {
+    // Перевірка на ненульові значення
+    if (num1 != 0 && num2 != 0) {
+        // Заповнення вхідних даних
+        data.num1 = num1;
+        data.num2 = num2;
+    } else {
+        std::cout << "Помилка: числа повинні бути ненульовими." << std::endl;
+    }
+}
+
+int main() {
+    // Оголошення змінної (об'єкту) структури
+    CalculationData data;
+    
+    // Виклик функції для заповнення вхідних даних
+    fillData(data, 4, 3);
+    
+    // Виклик функції для обробки даних
+    processCalculationData(data);
+    
+    // Виведення значень вихідних даних
+    std::cout << "Сума: " << data.sum << std::endl;
+    std::cout << "Різниця: " << data.difference << std::endl;
+    std::cout << "Добуток: " << data.product << std::endl;
+    std::cout << "Частка: " << data.quotient << std::endl;
+    std::cout << "Є хоча б одна пара співпадаючих чисел: " << (data.has_matching_pair ? "Так" : "Ні") << std::endl;
+    
+    return 0;
+}
