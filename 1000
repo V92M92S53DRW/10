@@ -1,0 +1,109 @@
+#ifndef TIME_UTILS_H
+#define TIME_UTILS_H
+
+// Оголошення структури TTime
+struct TTime {
+    int hours;
+    int minutes;
+    int seconds;
+};
+
+// Прототип функції AddSec
+void AddSec(TTime &T, int N);
+
+#endif // TIME_UTILS_H
+#include "time_utils.h"
+
+// Реалізація функції AddSec
+void AddSec(TTime &T, int N) {
+    // Перевірка чи час T є правильним
+    if (T.hours >= 0 && T.hours < 24 &&
+        T.minutes >= 0 && T.minutes < 60 &&
+        T.seconds >= 0 && T.seconds < 60) {
+        
+        // Додаємо секунди N
+        int total_seconds = T.hours * 3600 + T.minutes * 60 + T.seconds + N;
+        
+        // Перевірка на переповнення годин, хвилин та секунд
+        if (total_seconds >= 0) {
+            T.hours = (total_seconds / 3600) % 24;
+            T.minutes = (total_seconds / 60) % 60;
+            T.seconds = total_seconds % 60;
+        }
+    }
+}
+#ifndef CALCULATION_UTILS_H
+#define CALCULATION_UTILS_H
+
+// Оголошення структури, що містить вхідні та вихідні дані задачі
+struct CalculationData {
+    int num1; // Перше число
+    int num2; // Друге число
+    int sum; // Сума
+    int difference; // Різниця
+    int product; // Добуток
+    float quotient; // Частка
+    bool has_matching_pair; // Показник, чи є пара співпадаючих чисел
+};
+
+// Прототип функції для обробки структури відповідно до задачі
+void processCalculationData(CalculationData &data);
+
+// Прототип функції для перевірки на коректність та заповнення вхідних даних структури
+void fillData(CalculationData &data, int num1, int num2);
+
+#endif // CALCULATION_UTILS_H
+#include "calculation_utils.h"
+
+// Реалізація функції для обробки структури відповідно до задачі
+void processCalculationData(CalculationData &data) {
+    // Обчислення суми, різниці, добуток і частки квадратів двох чисел
+    data.sum = data.num1 + data.num2;
+    data.difference = data.num1 - data.num2;
+    data.product = data.num1 * data.num2;
+    if (data.num2 != 0) {
+        data.quotient = (float)(data.num1 * data.num1) / (float)(data.num2 * data.num2);
+    } else {
+        // Якщо num2 дорівнює нулю, уникнути ділення на нуль
+        data.quotient = 0;
+    }
+    
+    // Перевірка на співпадіння пари чисел
+    data.has_matching_pair = (data.num1 == data.num2 || data.num1 * data.num1 == data.num2 * data.num2);
+}
+
+// Реалізація функції для перевірки на коректність та заповнення вхідних даних структури
+void fillData(CalculationData &data, int num1, int num2) {
+    // Перевірка на ненульові значення
+    if (num1 != 0 && num2 != 0) {
+        // Заповнення вхідних даних
+        data.num1 = num1;
+        data.num2 = num2;
+    } else {
+        std::cout << "Помилка: числа повинні бути ненульовими." << std::endl;
+    }
+}
+#include <iostream>
+#include "time_utils.h"
+#include "calculation_utils.h"
+
+int main() {
+    // Виклик функції для обробки часу
+    TTime time1 = {10, 15, 30};
+    AddSec(time1, 60);
+    std::cout << "New time 1: " << time1.hours << ":" << time1.minutes << ":" << time1.seconds << std::endl;
+
+    // Виклик функцій для обробки арифметичних операцій
+    CalculationData data;
+    fillData(data, 4, 3);
+    processCalculationData(data);
+
+    // Виведення результатів арифметичних операцій
+    std::cout << "Сума: " << data.sum << std::endl;
+    std::cout << "Різниця: " << data.difference << std::endl;
+    std::cout << "Добуток: " << data.product << std::endl;
+    std::cout << "Частка: " << data.quotient << std::endl;
+    std::cout << "Є хоча б одна пара співпадаючих чисел: " << (data.has_matching_pair ? "Так" : "Ні") << std::endl;
+
+    return 0;
+}
